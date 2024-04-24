@@ -151,13 +151,13 @@ namespace DCSGfxUtility
             switch (GetSelectedPreset())
             {
                 case "Custom1":
-                    i = 74;
-                    break;
-                case "Custom2":
                     i = 75;
                     break;
-                case "Custom3":
+                case "Custom2":
                     i = 76;
+                    break;
+                case "Custom3":
+                    i = 77;
                     break;
                 default:
                     break;
@@ -184,7 +184,7 @@ namespace DCSGfxUtility
                         string[] customFileContents = File.ReadAllLines(GetCustomNameFile());
                         //System.Diagnostics.Debug.WriteLine(custom1FileContents[74]);
                         //Regex regExpr = new Regex("\"[^\"]*\"", RegexOptions.IgnoreCase);
-                        string lineCheck = customFileContents[74];
+                        string lineCheck = customFileContents[75];
                         foreach (Match match in Regex.Matches(lineCheck, "\"[^\"]*\""))
                         {
                             var debugRegex = match.ToString();
@@ -222,7 +222,7 @@ namespace DCSGfxUtility
                         string[] customFileContents = File.ReadAllLines(GetCustomNameFile());
                         //System.Diagnostics.Debug.WriteLine(custom2FileContents[75]);
                         //Regex regExpr = new Regex("\"[^\"]*\"", RegexOptions.IgnoreCase);
-                        string lineCheck = customFileContents[75];
+                        string lineCheck = customFileContents[76];
                         foreach (Match match in Regex.Matches(lineCheck, "\"[^\"]*\""))
                         {
                             var debugRegex = match.ToString();
@@ -260,7 +260,7 @@ namespace DCSGfxUtility
                         string[] customFileContents = File.ReadAllLines(GetCustomNameFile());
                         //System.Diagnostics.Debug.WriteLine(custom3FileContents[76]);
                         //Regex regExpr = new Regex("\"[^\"]*\"", RegexOptions.IgnoreCase);
-                        string lineCheck = customFileContents[76];
+                        string lineCheck = customFileContents[77];
                         foreach (Match match in Regex.Matches(lineCheck, "\"[^\"]*\""))
                         {
                             var debugRegex = match.ToString();
@@ -299,11 +299,25 @@ namespace DCSGfxUtility
                 renamePreset(renameToText);
                 MessageBox.Show("Success!");
             }
+            else
+            {
+                MessageBox.Show("Please enter your desired new name for the preset.");
+            }
         }
 
-        private void renameTB_KeyPress(object sender, KeyPressEventArgs e)
+        private void renameTB_TextChanged(object sender, EventArgs e)
         {
-            e.Handled = !char.IsLetter(e.KeyChar) && !char.IsDigit(e.KeyChar) && !char.IsWhiteSpace(e.KeyChar) && !char.IsControl(e.KeyChar);
+            if(!Regex.Match(renameTB.Text, @"^\w+$").Success)
+            {
+                var text = renameTB.Text;
+                if (!string.IsNullOrEmpty(text)) 
+                {
+                    text = text.Remove(text.Length - 1);
+                    renameTB.Text = text;
+                    renameTB.SelectionStart = renameTB.TextLength;
+                }
+
+            }
         }
     }
 }
